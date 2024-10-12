@@ -24,6 +24,18 @@ app.use(limiter);
 // Use Helmet to help secure the app by setting various HTTP headers
 app.use(helmet());
 
+// Set Content Security Policy
+const cspOptions = {
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'"],
+    styleSrc: ["'self'"],
+    // Add other directives as needed
+  },
+};
+
+app.use(helmet.contentSecurityPolicy(cspOptions)); // Add CSP middleware
+
 // Enable CORS with specific options if needed
 app.use(cors({ origin: '*' })); // For FCC testing purposes only
 

@@ -59,11 +59,31 @@ module.exports = function (app, db) {
           // Logic to handle likes for both stocks
           let likes1 = 0, likes2 = 0;
 
+          // Check if user wants to like either stock
+          const like1 = req.query.like === 'true' ? true : false; // Assuming user wants to like first stock
+          const like2 = req.query.like === 'true' ? true : false; // Assuming user wants to like second stock
+
+          if (like1) {
+            const userIP = req.ip; // Capture user IP
+            const anonymizedIP = anonymizeIP(userIP);
+            // Save likes logic for stock 1
+            likes1 = 1; // Placeholder for increment logic
+          }
+          if (like2) {
+            const userIP = req.ip; // Capture user IP
+            const anonymizedIP = anonymizeIP(userIP);
+            // Save likes logic for stock 2
+            likes2 = 1; // Placeholder for increment logic
+          }
+
+          // Calculate rel_likes
+          const relLikes = likes1 - likes2;
+
           // Return response comparing two stocks
           res.json({
             stockData: [
-              { stock: stock[0].toUpperCase(), price: price1, likes: likes1 },
-              { stock: stock[1].toUpperCase(), price: price2, likes: likes2 }
+              { stock: stock[0].toUpperCase(), price: price1, rel_likes: relLikes },
+              { stock: stock[1].toUpperCase(), price: price2, rel_likes: -relLikes }
             ]
           });
         } catch (err) {
